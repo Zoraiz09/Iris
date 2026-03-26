@@ -3,9 +3,10 @@ import { AuthProvider, useAuth } from './contexts/AuthContext'
 import Dashboard from './components/Dashboard'
 import DetailedView from './components/DetailedView'
 import Auth from './components/Auth'
+import PendingApproval from './components/PendingApproval'
 
 const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth()
+  const { user, loading, approvalStatus } = useAuth()
 
   if (loading) {
     return (
@@ -23,6 +24,10 @@ const ProtectedRoute = ({ children }) => {
 
   if (!user) {
     return <Navigate to="/login" replace />
+  }
+
+  if (approvalStatus !== 'approved') {
+    return <PendingApproval />
   }
 
   return children
@@ -43,9 +48,10 @@ function App() {
 }
 
 const AuthRoute = () => {
-  const { user, loading } = useAuth()
+  const { user, loading, approvalStatus } = useAuth()
   if (loading) return null
-  if (user) return <Navigate to="/" replace />
+  if (user && approvalStatus === 'approved') return <Navigate to="/" replace />
+  if (user && approvalStatus && approvalStatus !== 'approved') return <PendingApproval />
   return <Auth />
 }
 

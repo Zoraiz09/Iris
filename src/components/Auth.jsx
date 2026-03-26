@@ -38,8 +38,7 @@ const Auth = () => {
       if (error) {
         setError(error.message)
       } else {
-        setMessage('Account created! Check your email for a confirmation link, or sign in if email confirmation is disabled.')
-        setIsLogin(true)
+        setMessage('Account created! Your access request has been sent to the admin for approval.')
         setPassword('')
         setConfirmPassword('')
       }
