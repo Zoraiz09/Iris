@@ -43,10 +43,8 @@ export default async function handler(req, res) {
 
     if (insertError) throw insertError
 
-    // Send email to admin
-    const baseUrl = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : 'http://localhost:3000'
+    // Use the production domain, not VERCEL_URL (which changes per deploy)
+    const baseUrl = process.env.APP_URL || `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL}`
 
     const approveUrl = `${baseUrl}/api/approve?token=${approvalToken}&action=approve`
     const denyUrl = `${baseUrl}/api/approve?token=${approvalToken}&action=deny`
@@ -84,11 +82,12 @@ export default async function handler(req, res) {
     if (!emailRes.ok) {
       const emailError = await emailRes.text()
       console.error('Email send error:', emailError)
+      return res.status(200).json({ message: 'Approval requested', emailWarning: 'Email notification failed: ' + emailError })
     }
 
-    return res.status(200).json({ message: 'Approval requested' })
+    return res.status(200).json({ message: 'Approval requested', emailSent: true })
   } catch (error) {
     console.error('Error:', error)
-    return res.status(500).json({ error: 'Internal server error' })
+    return res.status(500).json({ error: 'Internal server error', details: error.message })
   }
 }
