@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { Wifi, WifiOff, Loader2 } from 'lucide-react'
 
 const RealtimeStatus = () => {
   const [status, setStatus] = useState('checking')
   const [tables, setTables] = useState([])
 
   useEffect(() => {
-    // Test realtime connection
     const testChannel = supabase
       .channel('realtime-test')
       .on(
@@ -30,7 +30,6 @@ const RealtimeStatus = () => {
         }
       })
 
-    // Check which tables have realtime enabled
     const checkTables = async () => {
       try {
         const { data, error } = await supabase.rpc('get_realtime_tables')
@@ -38,7 +37,6 @@ const RealtimeStatus = () => {
           setTables(data)
         }
       } catch (err) {
-        // RPC might not exist, that's okay
         console.log('Could not check realtime tables via RPC')
       }
     }
@@ -51,22 +49,31 @@ const RealtimeStatus = () => {
   }, [])
 
   return (
-    <div className="fixed bottom-4 right-4 bg-white border-2 rounded-lg shadow-lg p-3 text-xs z-50">
-      <div className="flex items-center gap-2 mb-2">
-        <div className={`w-2 h-2 rounded-full ${
-          status === 'connected' ? 'bg-green-500' : 
-          status === 'error' ? 'bg-red-500' : 
-          'bg-yellow-500'
-        }`}></div>
-        <span className="font-semibold">
-          Realtime: {status === 'connected' ? '✅ Connected' : 
-                     status === 'error' ? '❌ Error' : 
-                     '🔄 Checking...'}
-        </span>
+    <div className="fixed bottom-4 right-4 bg-white/95 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg p-3 text-xs z-50">
+      <div className="flex items-center gap-2">
+        {status === 'connected' ? (
+          <>
+            <div className="relative">
+              <Wifi className="w-3.5 h-3.5 text-green-500" />
+              <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+            </div>
+            <span className="font-medium text-green-700">Connected</span>
+          </>
+        ) : status === 'error' ? (
+          <>
+            <WifiOff className="w-3.5 h-3.5 text-red-500" />
+            <span className="font-medium text-red-600">Disconnected</span>
+          </>
+        ) : (
+          <>
+            <Loader2 className="w-3.5 h-3.5 text-amber-500 animate-spin" />
+            <span className="font-medium text-amber-600">Connecting...</span>
+          </>
+        )}
       </div>
       {status === 'error' && (
-        <div className="text-red-600 text-xs mt-1">
-          Enable Realtime in Supabase Dashboard → Database → Replication
+        <div className="text-red-500 text-[10px] mt-1.5 leading-tight">
+          Enable Realtime in Supabase Dashboard
         </div>
       )}
     </div>
@@ -74,8 +81,3 @@ const RealtimeStatus = () => {
 }
 
 export default RealtimeStatus
-
-
-
-
-
