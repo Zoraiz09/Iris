@@ -69,14 +69,14 @@ export function clearFertilizerCache(cropType = null) {
       const cacheKey = getCacheKey(cropType);
       localStorage.removeItem(cacheKey);
       // Also clear root rot cache for this crop
-      const rootRotCacheKey = `root_rot_recommendation_${cropType?.toLowerCase() || 'default'}`;
+      const rootRotCacheKey = getCacheKey(`root_rot_${cropType?.toLowerCase() || 'default'}`);
       localStorage.removeItem(rootRotCacheKey);
       console.log(`🗑️ Cleared cache for ${cropType}`);
     } else {
       // Clear all fertilizer recommendation cache
       const keys = Object.keys(localStorage);
       keys.forEach(key => {
-        if (key.startsWith(CACHE_KEY_PREFIX) || key.startsWith('root_rot_recommendation_')) {
+        if (key.startsWith(CACHE_KEY_PREFIX)) {
           localStorage.removeItem(key);
         }
       });
@@ -204,8 +204,8 @@ export async function getFertilizerRecommendation(sensorData, cropType) {
 export async function getRootRotSuggestion(sensorData, cropType) {
   try {
     // Check for cached root rot recommendation (once per day)
-    const cacheKey = `root_rot_recommendation_${cropType?.toLowerCase() || 'default'}`;
-    const cached = getCachedRecommendation(cacheKey);
+    const rootRotKey = `root_rot_${cropType?.toLowerCase() || 'default'}`;
+    const cached = getCachedRecommendation(rootRotKey);
     if (cached) {
       console.log('📦 Using cached root rot recommendation');
       return cached;
@@ -263,15 +263,15 @@ Respond ONLY with valid JSON: {"riskLevel": "Low|Medium|High", "explanation": "C
     console.log('🎯 Final root rot recommendation:', recommendation);
     
     // Cache the root rot recommendation for 24 hours
-    setCachedRecommendation(cacheKey, recommendation);
+    setCachedRecommendation(rootRotKey, recommendation);
 
     return recommendation;
   } catch (error) {
     console.error('❌ Root rot Error:', error);
     
     // Try to return cached recommendation even if API fails
-    const cacheKey = `root_rot_recommendation_${cropType?.toLowerCase() || 'default'}`;
-    const cached = getCachedRecommendation(cacheKey);
+    const rootRotKey = `root_rot_${cropType?.toLowerCase() || 'default'}`;
+    const cached = getCachedRecommendation(rootRotKey);
     if (cached) {
       console.log('⚠️ API failed, using cached root rot recommendation');
       return cached;

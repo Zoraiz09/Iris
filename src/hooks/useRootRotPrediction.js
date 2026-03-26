@@ -11,24 +11,17 @@ export function useRootRotPrediction(sensorData, currentCropType) {
       setLoading(true)
       setError(null)
 
-      // Only generate prediction if sensor data is available
       if (!sensorData) {
-        console.log('⏳ Waiting for sensor data before generating root rot prediction...')
         setRootRotData(null)
         setLoading(false)
         return
       }
 
-      console.log('🔍 Generating root rot prediction with Gemini...')
-      console.log('📊 Sensor data:', sensorData)
-      console.log('🌱 Crop type:', currentCropType)
-
-      // Get AI-powered root rot prediction
+      // Get AI-powered root rot prediction (cached for 24h inside geminiService)
       const prediction = await getRootRotSuggestion(sensorData, currentCropType)
-      console.log('✨ Root rot prediction received:', prediction)
       setRootRotData(prediction)
     } catch (err) {
-      console.error('❌ Error fetching root rot prediction:', err)
+      console.error('Error fetching root rot prediction:', err)
       setError(err.message)
       setRootRotData(null)
     } finally {
@@ -36,9 +29,14 @@ export function useRootRotPrediction(sensorData, currentCropType) {
     }
   }
 
+  // Use stable primitive values as dependencies instead of the sensorData object
+  const ph = sensorData?.ph_level
+  const moisture = sensorData?.moisture
+  const nitrogen = sensorData?.nitrogen
+
   useEffect(() => {
     fetchRootRotPrediction()
-  }, [sensorData, currentCropType])
+  }, [ph, moisture, nitrogen, currentCropType])
 
   return { rootRotData, loading, error, refetch: fetchRootRotPrediction }
 }
