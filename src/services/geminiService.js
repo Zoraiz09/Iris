@@ -1,7 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// IMPORTANT: Replace this with an environment variable in production!
-const genAI = new GoogleGenerativeAI('AIzaSyCuYzTG3mXQriv72SzrZCiLBV5oUeZpqmE');
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 
 const cropData = {
   wheat: { pH: { min: 6.0, max: 7.0 }, N: { min: 25, max: 50 }, P: { min: 15, max: 30 }, K: { min: 20, max: 40 } },

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 
-const API_KEY = 'c9e49bee9ad64b7e858135239261401'
+const API_KEY = import.meta.env.VITE_WEATHER_API_KEY
 
 function mapConditionToIcon(condition) {
   const lower = condition.toLowerCase()
