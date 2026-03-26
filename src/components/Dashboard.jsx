@@ -120,12 +120,58 @@ const Dashboard = () => {
           <h1 className="text-xl font-semibold">IRIS Agricultural Monitoring System</h1>
         </div>
         <div className="flex items-center gap-6">
-          <button className="flex items-center gap-2 hover:opacity-80">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-            </svg>
-            <span>Alerts</span>
-          </button>
+          <div className="relative group">
+            <button className="flex items-center gap-2 hover:opacity-80">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+              <span>Alerts</span>
+              {alerts.filter(a => a.severity === 'critical' || a.severity === 'high').length > 0 && (
+                <span className="bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {alerts.filter(a => a.severity === 'critical' || a.severity === 'high').length}
+                </span>
+              )}
+            </button>
+            <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="p-3 border-b border-gray-100">
+                <h3 className="text-sm font-semibold text-gray-800">Urgent Alerts</h3>
+              </div>
+              <div className="max-h-64 overflow-y-auto">
+                {alertsLoading ? (
+                  <div className="p-4 text-center text-gray-400 text-sm">Loading alerts...</div>
+                ) : alerts.filter(a => a.severity === 'critical' || a.severity === 'high' || a.severity === 'medium').length === 0 ? (
+                  <div className="p-4 text-center text-gray-400 text-sm">No urgent alerts</div>
+                ) : (
+                  alerts
+                    .filter(a => a.severity === 'critical' || a.severity === 'high' || a.severity === 'medium')
+                    .sort((a, b) => {
+                      const order = { critical: 0, high: 1, medium: 2 }
+                      return (order[a.severity] ?? 3) - (order[b.severity] ?? 3)
+                    })
+                    .map((alert, i) => (
+                      <div key={i} className="px-3 py-2.5 border-b border-gray-50 last:border-0 hover:bg-gray-50">
+                        <div className="flex items-start gap-2">
+                          <span className={`mt-1 w-2 h-2 rounded-full flex-shrink-0 ${
+                            alert.severity === 'critical' ? 'bg-red-500' :
+                            alert.severity === 'high' ? 'bg-orange-500' : 'bg-yellow-500'
+                          }`} />
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-semibold text-gray-700 uppercase">{alert.alert_type.replace('_', ' ')}</span>
+                              <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${
+                                alert.severity === 'critical' ? 'bg-red-100 text-red-700' :
+                                alert.severity === 'high' ? 'bg-orange-100 text-orange-700' : 'bg-yellow-100 text-yellow-700'
+                              }`}>{alert.severity}</span>
+                            </div>
+                            <p className="text-xs text-gray-600 mt-0.5 leading-relaxed">{alert.message}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                )}
+              </div>
+            </div>
+          </div>
           <button className="flex items-center gap-2 hover:opacity-80">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
