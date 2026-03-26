@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(find /c/Users/zorai/Desktop/Personal/Iris/src -type f \\\\\\(-name *.jsx -o -name *.tsx -o -name *.js -o -name *.ts \\\\\\))",
+      "Bash(gh auth:*)"
+    ]
+  }
+}
