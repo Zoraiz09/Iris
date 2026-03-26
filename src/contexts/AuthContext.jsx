@@ -60,11 +60,13 @@ export const AuthProvider = ({ children }) => {
     if (!error && data.user) {
       // Request admin approval
       try {
-        await fetch('/api/request-approval', {
+        const res = await fetch('/api/request-approval', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId: data.user.id, email })
         })
+        const result = await res.json()
+        console.log('Approval API response:', result)
         setApprovalStatus('pending')
       } catch (e) {
         console.error('Failed to request approval:', e)
