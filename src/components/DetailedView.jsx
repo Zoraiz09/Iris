@@ -35,30 +35,30 @@ const DetailedView = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-emerald-50/30 w-full">
       {/* Header */}
-      <header className="bg-gradient-to-r from-green-800 via-green-700 to-emerald-800 text-white px-6 py-4 flex justify-between items-center shadow-lg w-full border-b border-green-600/30">
-        <div className="flex items-center gap-3">
-          <button onClick={() => navigate('/')} className="p-2 rounded-xl hover:bg-white/10 transition-all duration-200">
+      <header className="bg-gradient-to-r from-green-800 via-green-700 to-emerald-800 text-white px-3 sm:px-6 py-3 sm:py-4 flex justify-between items-center shadow-lg w-full border-b border-green-600/30 safe-top">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button onClick={() => navigate('/')} className="p-2 rounded-xl hover:bg-white/10 active:bg-white/20 transition-all duration-200">
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <div className="bg-white/15 p-2 rounded-xl backdrop-blur-sm">
-            <Leaf className="w-6 h-6 text-green-300" />
+          <div className="bg-white/15 p-1.5 sm:p-2 rounded-xl backdrop-blur-sm">
+            <Leaf className="w-5 h-5 sm:w-6 sm:h-6 text-green-300" />
           </div>
           <div>
-            <h1 className="text-lg font-bold tracking-tight">IRIS</h1>
-            <p className="text-green-300/80 text-xs font-medium -mt-0.5">Agricultural Monitoring</p>
+            <h1 className="text-base sm:text-lg font-bold tracking-tight">IRIS</h1>
+            <p className="text-green-300/80 text-[10px] sm:text-xs font-medium -mt-0.5">Agricultural Monitoring</p>
           </div>
         </div>
-        <button onClick={signOut} className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/10 transition-all duration-200">
+        <button onClick={signOut} className="flex items-center gap-2 px-2.5 sm:px-3 py-2 rounded-xl hover:bg-white/10 active:bg-white/20 transition-all duration-200">
           <LogOut className="w-5 h-5" />
-          <span className="text-sm font-medium">Sign Out</span>
+          <span className="text-sm font-medium hidden sm:inline">Sign Out</span>
         </button>
       </header>
 
       {/* Main Content */}
-      <main className="px-4 sm:px-6 py-6 w-full max-w-[1600px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <main className="px-3 sm:px-6 py-4 sm:py-6 w-full max-w-[1600px] mx-auto safe-bottom">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Live Sensor Data */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 card-hover animate-slide-up">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 card-hover animate-slide-up">
             <div className="flex justify-between items-center mb-5">
               <div className="flex items-center gap-2.5">
                 <div className="bg-emerald-100 p-2 rounded-lg">
@@ -126,7 +126,7 @@ const DetailedView = () => {
           </div>
 
           {/* 7-Day Forecast */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 card-hover animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 card-hover animate-slide-up" style={{ animationDelay: '0.1s' }}>
             <div className="flex justify-between items-center mb-5">
               <div className="flex items-center gap-2.5">
                 <div className="bg-blue-100 p-2 rounded-lg">
@@ -160,7 +160,7 @@ const DetailedView = () => {
           </div>
 
           {/* AI Fertilizer Plan */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 card-hover animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 card-hover animate-slide-up" style={{ animationDelay: '0.2s' }}>
             <div className="flex justify-between items-center mb-5">
               <div className="flex items-center gap-2.5">
                 <div className="bg-violet-100 p-2 rounded-lg">

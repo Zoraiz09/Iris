@@ -12,6 +12,8 @@ html, body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
 }
 
 #root {
@@ -19,14 +21,43 @@ html, body {
   min-height: 100vh;
 }
 
-/* Card hover effects */
+/* Card hover effects - disabled on touch devices */
 .card-hover {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+@media (hover: hover) and (pointer: fine) {
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Mobile horizontal scroll for alert cards */
+.mobile-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Safe area padding for notched phones */
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Touch-friendly tap targets */
+@media (pointer: coarse) {
+  button, select, a {
+    min-height: 44px;
+  }
 }
 
 /* Glass morphism */
