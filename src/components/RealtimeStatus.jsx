@@ -49,30 +49,30 @@ const RealtimeStatus = () => {
   }, [])
 
   return (
-    <div className="fixed bottom-4 right-4 bg-white/95 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg p-3 text-xs z-50">
+    <div className="fixed bottom-4 right-4 glass-card rounded-xl p-3 text-xs z-50">
       <div className="flex items-center gap-2">
         {status === 'connected' ? (
           <>
             <div className="relative">
-              <Wifi className="w-3.5 h-3.5 text-green-500" />
-              <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+              <Wifi className="w-3.5 h-3.5 text-green-400" />
+              <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
             </div>
-            <span className="font-medium text-green-700">Connected</span>
+            <span className="font-medium text-green-400">Connected</span>
           </>
         ) : status === 'error' ? (
           <>
-            <WifiOff className="w-3.5 h-3.5 text-red-500" />
-            <span className="font-medium text-red-600">Disconnected</span>
+            <WifiOff className="w-3.5 h-3.5 text-red-400" />
+            <span className="font-medium text-red-400">Disconnected</span>
           </>
         ) : (
           <>
-            <Loader2 className="w-3.5 h-3.5 text-amber-500 animate-spin" />
-            <span className="font-medium text-amber-600">Connecting...</span>
+            <Loader2 className="w-3.5 h-3.5 text-amber-400 animate-spin" />
+            <span className="font-medium text-amber-400">Connecting...</span>
           </>
         )}
       </div>
       {status === 'error' && (
-        <div className="text-red-500 text-[10px] mt-1.5 leading-tight">
+        <div className="text-red-400/70 text-[10px] mt-1.5 leading-tight">
           Enable Realtime in Supabase Dashboard
         </div>
       )}
